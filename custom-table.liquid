@@ -1,0 +1,154 @@
+<style>
+          .comparison-table-wrapper {
+            width: 100%;
+            margin-bottom: 30px;
+             border-collapse: collapse;
+            overflow-y: scroll;
+            scrollbar-width: none;
+          }
+    .comparison-table-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+          .comparison-title {
+            text-align: left;
+            font-size: 48px;
+            font-weight: bold;
+            width:90%;
+            margin:0 auto;
+            margin-bottom: 12px;
+            color: #9f87d6;
+          }
+
+          .comparison-table {
+        width:100%;
+            border-collapse: collapse;
+            text-align: center;
+
+          }
+
+          .comparison-table th,
+          .comparison-table td {
+            border-bottom: 1px solid #9f87d6;
+    min-width:128px;
+            min-height:113px;
+            padding: 14px;
+          }
+
+          .comparison-table .brand-col {
+            background-color: #9f87d6;
+            color: #fff;
+            font-weight: bold;
+          }
+
+          .check-icon {
+            width: 18px;
+            height: 18px;
+          }
+        @media screen and (max-width: 768px) {
+        .comparison-title {
+          font-size: 32px; /* Adjust the font size for smaller screens */
+          width: 100%;
+          text-align:start;
+          margin-bottom: 8px; /* Reduce the bottom margin */
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .comparison-title {
+          font-size: 24px; /* Further reduce font size for mobile */
+          text-align: center; /* Center the text for small screens */
+        }
+      }
+</style>
+
+{% capture check_svg %}
+<svg class="check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="12" fill="#A8E6CF"  />
+  <path d="M9 12.5L11 14.5L15 10.5" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+{% endcapture %}
+
+{% capture non_check_svg %}
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 17" fill="none" class="mx-auto">
+  <circle cx="8" cy="8.5" r="7" stroke=" #c4bbbb" stroke-width="1.5"></circle>
+</svg>
+
+{% endcapture %}
+
+<div class="comparison-table-wrapper">
+  <div><h2 class="comparison-title">Why Golfers Choose Golf Nibs</h2></div>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th class="brand-col">GOLF NIBS</th>
+        <th>🥤 Sports Drinks</th>
+        <th>⚡ Energy Drinks</th>
+        <th>💊 Golf Supplements</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for block in section.blocks %}
+        <tr>
+          <td style="text-align:left;">{{ block.settings.feature }}</td>
+          <td class="brand-col">
+            {% if block.settings.brand %}
+              {{ check_svg }}
+              <div style="margin-top: 6px; font-size: 13px;">{{ settings.brand_title }}</div>
+            {% endif %}
+          </td>
+          <td>
+            {% if block.settings.supplements %}{{ check_svg }} {% else %} {{ non_check_svg }} {% endif %}
+          </td>
+          <td>
+            {% if block.settings.coffee %}{{ check_svg }} {% else %} {{ non_check_svg }}{% endif %}
+          </td>
+          <td>
+            {% if block.settings.energy %}{{ check_svg }} {% else %} {{ non_check_svg }}{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% schema %}
+{
+  "name": "GolfNibs Comparison Table",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Section Title",
+      "default": "See Why Golfers Choose Golf Nibs"
+    },
+    {
+      "type": "text",
+      "id": "brand_title",
+      "label": "Brand Title",
+      "default": "GolfNibs"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Feature Row",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Feature", "default": "Feature name" },
+        { "type": "checkbox", "id": "brand", "label": "GolfNibs", "default": true },
+        { "type": "checkbox", "id": "supplements", "label": "Sports Drinks" },
+        { "type": "checkbox", "id": "coffee", "label": "Energy Drinks" },
+        { "type": "checkbox", "id": "energy", "label": "Golf Supplements (Pills & Powders)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GolfNibs Comparison Table",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
